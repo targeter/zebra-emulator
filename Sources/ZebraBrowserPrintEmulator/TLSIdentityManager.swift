@@ -19,7 +19,10 @@ final class TLSIdentityManager {
 
         let data = try Data(contentsOf: paths.pkcs12)
         var importedItems: CFArray?
-        let options: [String: Any] = [kSecImportExportPassphrase as String: passphrase]
+        var options: [String: Any] = [kSecImportExportPassphrase as String: passphrase]
+        if #available(macOS 15.0, *) {
+            options[kSecImportToMemoryOnly as String] = true
+        }
         let status = SecPKCS12Import(data as CFData, options as CFDictionary, &importedItems)
         guard status == errSecSuccess,
               let items = importedItems as? [[String: Any]],

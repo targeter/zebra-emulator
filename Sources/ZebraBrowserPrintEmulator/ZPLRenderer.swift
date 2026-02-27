@@ -1,8 +1,8 @@
 import Foundation
 
 final class ZPLRenderer {
-    func render(zpl: String) async throws -> Data {
-        guard let url = URL(string: "https://api.labelary.com/v1/printers/8dpmm/labels/4x6/0/") else {
+    func render(zpl: String, labelDimensions: String) async throws -> Data {
+        guard let url = URL(string: "https://api.labelary.com/v1/printers/8dpmm/labels/\(labelDimensions)/0/") else {
             throw RendererError.invalidURL
         }
 

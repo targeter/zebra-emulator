@@ -11,6 +11,12 @@ This project emulates Zebra Browser Print on macOS and captures label print requ
 
 The app serves HTTPS on `127.0.0.1` using a self-signed localhost certificate. It defaults to port `9100`, and you can change the port from the menu bar popover (Port field + Apply).
 
+Label rendering size is selectable from the menu bar and persisted across launches. Supported sizes:
+
+- `10 x 5 cm` (default)
+- `10 x 15 cm`
+- `10 x 21 cm`
+
 ## Run
 
 ```bash

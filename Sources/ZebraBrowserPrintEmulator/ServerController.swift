@@ -41,13 +41,15 @@ struct BrowserPrintAvailableResponse: Codable {
 
 final class ServerController {
     private let port: UInt16
+    private let labelDimensions: String
     private let onEvent: (ServerEvent) -> Void
     private let renderer = ZPLRenderer()
     private let tlsIdentityManager = TLSIdentityManager()
     private var listener: NWListener?
 
-    init(port: UInt16, onEvent: @escaping (ServerEvent) -> Void) {
+    init(port: UInt16, labelDimensions: String, onEvent: @escaping (ServerEvent) -> Void) {
         self.port = port
+        self.labelDimensions = labelDimensions
         self.onEvent = onEvent
     }
 
@@ -174,7 +176,7 @@ final class ServerController {
 
         Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else { return }
-            if let imageData = try? await self.renderer.render(zpl: zpl) {
+            if let imageData = try? await self.renderer.render(zpl: zpl, labelDimensions: self.labelDimensions) {
                 self.onEvent(.labelPreview(zpl: zpl, imageData: imageData))
             }
         }

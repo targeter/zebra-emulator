@@ -38,6 +38,17 @@ private struct MenuContentView: View {
                 .font(.footnote)
                 .foregroundStyle(.secondary)
             HStack(spacing: 8) {
+                Text("Label")
+                    .font(.caption)
+                Picker("Label Size", selection: $appState.selectedLabelSizeKey) {
+                    ForEach(appState.labelSizeKeys, id: \.self) { key in
+                        Text(appState.labelSizeTitle(for: key)).tag(key)
+                    }
+                }
+                .pickerStyle(.menu)
+                .labelsHidden()
+            }
+            HStack(spacing: 8) {
                 Text("Port")
                     .font(.caption)
                 TextField("9100", text: $appState.portInput)
@@ -73,5 +84,8 @@ private struct MenuContentView: View {
         }
         .padding(12)
         .frame(width: 330)
+        .onChange(of: appState.selectedLabelSizeKey) { newSize in
+            appState.applyLabelSizeChange(newSize)
+        }
     }
 }

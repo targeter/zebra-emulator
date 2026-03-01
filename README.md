@@ -42,3 +42,22 @@ curl -k https://127.0.0.1:9100/available
 - Rendering uses the public Labelary API.
 - If rendering fails, the request still returns success so client code can continue while you debug requests.
 - On macOS 15+, TLS identity import is memory-only to avoid repeated Keychain private-key permission prompts.
+
+## Package for distribution
+
+Create a distributable `.app` and zip archive:
+
+```bash
+./scripts/package-macos.sh
+```
+
+Artifacts are written to `dist/`:
+
+- `dist/Zebra Browser Print Emulator.app`
+- `dist/Zebra Browser Print Emulator.zip`
+
+Optional signing before sharing:
+
+```bash
+CODESIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" ./scripts/package-macos.sh
+```

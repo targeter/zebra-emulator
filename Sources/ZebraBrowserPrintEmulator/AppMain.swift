@@ -34,12 +34,6 @@ private struct MenuContentView: View {
                 .font(.headline)
             Text("Status: \(appState.serverStatus)")
                 .font(.subheadline)
-            Text("HTTP:  http://127.0.0.1:\(appState.httpPort)")
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-            Text("HTTPS: https://127.0.0.1:\(appState.httpsPort)")
-                .font(.footnote)
-                .foregroundStyle(.secondary)
 
             Divider()
             Text("Printers")

@@ -1,0 +1,380 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0777F87C1834FC0348A0F588 /* AppMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D9B10BA6B7D53465E2F586 /* AppMain.swift */; };
+		3C76007BD101F137C6FE1A8C /* PreviewWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D5DB779E0A78D3782FFC88 /* PreviewWindowManager.swift */; };
+		466BCB66A4E87ADD9E55B8D7 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = B75DB5C211D8C710CF816424 /* AppIcon.icns */; };
+		65533E6EFF41C386F1B232B1 /* ServerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00CC4A91FA24DB151C08468C /* ServerController.swift */; };
+		797C3987ACDD9A595579567C /* TLSIdentityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E473BCF09ECF38E8D06DD603 /* TLSIdentityManager.swift */; };
+		8719789D8F313D878E552011 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B82F65EC143328D2EE58E7A /* AppState.swift */; };
+		C0A457F944792A4950F3A468 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79CBA5BAB35E2F093302BD8C /* Cocoa.framework */; };
+		C1CF7BF17610B516592B6CD8 /* ZPLRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673D7ED33D6209C62081FE3E /* ZPLRenderer.swift */; };
+		EF35AD978A1A8CBF29E07A08 /* HTTPTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F980F15C3F4E73EB43C86278 /* HTTPTypes.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		00CC4A91FA24DB151C08468C /* ServerController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ServerController.swift; path = Sources/ZebraBrowserPrintEmulator/ServerController.swift; sourceTree = "<group>"; };
+		07C940DA6F77ED9E3B628C5D /* ZebraBrowserPrintEmulator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZebraBrowserPrintEmulator.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0B82F65EC143328D2EE58E7A /* AppState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppState.swift; path = Sources/ZebraBrowserPrintEmulator/AppState.swift; sourceTree = "<group>"; };
+		673D7ED33D6209C62081FE3E /* ZPLRenderer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ZPLRenderer.swift; path = Sources/ZebraBrowserPrintEmulator/ZPLRenderer.swift; sourceTree = "<group>"; };
+		70D5DB779E0A78D3782FFC88 /* PreviewWindowManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PreviewWindowManager.swift; path = Sources/ZebraBrowserPrintEmulator/PreviewWindowManager.swift; sourceTree = "<group>"; };
+		79CBA5BAB35E2F093302BD8C /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		A7E4B66277FC271F8836149E /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = Info.plist; path = XcodeApp/Info.plist; sourceTree = "<group>"; };
+		B75DB5C211D8C710CF816424 /* AppIcon.icns */ = {isa = PBXFileReference; includeInIndex = 1; name = AppIcon.icns; path = XcodeApp/Resources/AppIcon.icns; sourceTree = "<group>"; };
+		E473BCF09ECF38E8D06DD603 /* TLSIdentityManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TLSIdentityManager.swift; path = Sources/ZebraBrowserPrintEmulator/TLSIdentityManager.swift; sourceTree = "<group>"; };
+		F8D9B10BA6B7D53465E2F586 /* AppMain.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppMain.swift; path = Sources/ZebraBrowserPrintEmulator/AppMain.swift; sourceTree = "<group>"; };
+		F980F15C3F4E73EB43C86278 /* HTTPTypes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HTTPTypes.swift; path = Sources/ZebraBrowserPrintEmulator/HTTPTypes.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		59973E8BBF199C3A163DFF3A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C0A457F944792A4950F3A468 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		081FB84E17B5A94C175F149E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B75DB5C211D8C710CF816424 /* AppIcon.icns */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		385A1902416103638D3A55EE /* XcodeApp */ = {
+			isa = PBXGroup;
+			children = (
+				A7E4B66277FC271F8836149E /* Info.plist */,
+				081FB84E17B5A94C175F149E /* Resources */,
+			);
+			name = XcodeApp;
+			sourceTree = "<group>";
+		};
+		3C1A4D39F5EB697760E8C2DF = {
+			isa = PBXGroup;
+			children = (
+				AD964FC893F1C34E5362890C /* Products */,
+				BFDDBB8695CA032A35E7ADB6 /* Frameworks */,
+				820A8317E8F68FC5943915EF /* Sources */,
+				385A1902416103638D3A55EE /* XcodeApp */,
+			);
+			sourceTree = "<group>";
+		};
+		820A8317E8F68FC5943915EF /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				F8275E42C0BA396928DCFD4E /* ZebraBrowserPrintEmulator */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		AD964FC893F1C34E5362890C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				07C940DA6F77ED9E3B628C5D /* ZebraBrowserPrintEmulator.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BFDDBB8695CA032A35E7ADB6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C2947EB7B8EB3692EDDE459A /* OS X */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C2947EB7B8EB3692EDDE459A /* OS X */ = {
+			isa = PBXGroup;
+			children = (
+				79CBA5BAB35E2F093302BD8C /* Cocoa.framework */,
+			);
+			name = "OS X";
+			sourceTree = "<group>";
+		};
+		F8275E42C0BA396928DCFD4E /* ZebraBrowserPrintEmulator */ = {
+			isa = PBXGroup;
+			children = (
+				F8D9B10BA6B7D53465E2F586 /* AppMain.swift */,
+				0B82F65EC143328D2EE58E7A /* AppState.swift */,
+				F980F15C3F4E73EB43C86278 /* HTTPTypes.swift */,
+				70D5DB779E0A78D3782FFC88 /* PreviewWindowManager.swift */,
+				00CC4A91FA24DB151C08468C /* ServerController.swift */,
+				E473BCF09ECF38E8D06DD603 /* TLSIdentityManager.swift */,
+				673D7ED33D6209C62081FE3E /* ZPLRenderer.swift */,
+			);
+			name = ZebraBrowserPrintEmulator;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		05F4052DFD3ED1E126AC73C6 /* ZebraBrowserPrintEmulator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4A280CA8EF61FCE0A78ADC7D /* Build configuration list for PBXNativeTarget "ZebraBrowserPrintEmulator" */;
+			buildPhases = (
+				2A0091955625CA1032045B69 /* Sources */,
+				59973E8BBF199C3A163DFF3A /* Frameworks */,
+				D0C396798A0FF459FE864571 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ZebraBrowserPrintEmulator;
+			productName = ZebraBrowserPrintEmulator;
+			productReference = 07C940DA6F77ED9E3B628C5D /* ZebraBrowserPrintEmulator.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2E0EBA4915F30B25FC11FC50 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					05F4052DFD3ED1E126AC73C6 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = 312F572AE5110044F546DEC7 /* Build configuration list for PBXProject "ZebraBrowserPrintEmulator" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 3C1A4D39F5EB697760E8C2DF;
+			minimizedProjectReferenceProxies = 0;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = AD964FC893F1C34E5362890C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				05F4052DFD3ED1E126AC73C6 /* ZebraBrowserPrintEmulator */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D0C396798A0FF459FE864571 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				466BCB66A4E87ADD9E55B8D7 /* AppIcon.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2A0091955625CA1032045B69 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0777F87C1834FC0348A0F588 /* AppMain.swift in Sources */,
+				8719789D8F313D878E552011 /* AppState.swift in Sources */,
+				EF35AD978A1A8CBF29E07A08 /* HTTPTypes.swift in Sources */,
+				3C76007BD101F137C6FE1A8C /* PreviewWindowManager.swift in Sources */,
+				65533E6EFF41C386F1B232B1 /* ServerController.swift in Sources */,
+				797C3987ACDD9A595579567C /* TLSIdentityManager.swift in Sources */,
+				C1CF7BF17610B516592B6CD8 /* ZPLRenderer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0E68B8FC69428C9275ED3C3B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = XcodeApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.dhl.zebra-browser-print-emulator";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.10;
+			};
+			name = Debug;
+		};
+		0EC3AE9EEE19FC6FA26CD971 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		C77A6D51BB32968DBECCF677 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = XcodeApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.dhl.zebra-browser-print-emulator";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.10;
+			};
+			name = Release;
+		};
+		EBF86C09352B48F592A5EBBB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		312F572AE5110044F546DEC7 /* Build configuration list for PBXProject "ZebraBrowserPrintEmulator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0EC3AE9EEE19FC6FA26CD971 /* Debug */,
+				EBF86C09352B48F592A5EBBB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4A280CA8EF61FCE0A78ADC7D /* Build configuration list for PBXNativeTarget "ZebraBrowserPrintEmulator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C77A6D51BB32968DBECCF677 /* Release */,
+				0E68B8FC69428C9275ED3C3B /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2E0EBA4915F30B25FC11FC50 /* Project object */;
+}

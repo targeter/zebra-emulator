@@ -40,17 +40,16 @@ private struct MenuContentView: View {
             Text("HTTPS: https://127.0.0.1:\(appState.httpsPort)")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
-            HStack(spacing: 8) {
-                Text("Label")
-                    .font(.caption)
-                Picker("Label Size", selection: $appState.selectedLabelSizeKey) {
-                    ForEach(appState.labelSizeKeys, id: \.self) { key in
-                        Text(appState.labelSizeTitle(for: key)).tag(key)
-                    }
-                }
-                .pickerStyle(.menu)
-                .labelsHidden()
+
+            Divider()
+            Text("Printers")
+                .font(.subheadline.weight(.semibold))
+            ForEach(appState.printers) { printer in
+                PrinterRowView(printer: printer)
+                    .environmentObject(appState)
             }
+
+            Divider()
             HStack(spacing: 8) {
                 Text("HTTP")
                     .font(.caption)
@@ -62,10 +61,9 @@ private struct MenuContentView: View {
                 TextField("9101", text: $appState.httpsPortInput)
                     .textFieldStyle(.roundedBorder)
                     .frame(width: 80)
-                Button("Apply") {
+                Button("Apply Ports") {
                     appState.applyPortChanges()
                 }
-                .keyboardShortcut(.return, modifiers: [])
             }
             if let message = appState.portMessage {
                 Text(message)
@@ -86,14 +84,70 @@ private struct MenuContentView: View {
                     .foregroundStyle(.secondary)
             }
             Divider()
-            Button("Quit") {
-                NSApp.terminate(nil)
+            HStack {
+                Button("Add Printer") {
+                    appState.addPrinter()
+                }
+                Spacer()
+                Button("Quit") {
+                    NSApp.terminate(nil)
+                }
             }
         }
         .padding(12)
-        .frame(width: 380)
-        .onChange(of: appState.selectedLabelSizeKey) { newSize in
-            appState.applyLabelSizeChange(newSize)
+        .frame(width: 420)
+    }
+}
+
+private struct PrinterRowView: View {
+    @EnvironmentObject private var appState: AppState
+    let printer: AppState.PrinterConfig
+    @State private var draftName: String
+
+    init(printer: AppState.PrinterConfig) {
+        self.printer = printer
+        _draftName = State(initialValue: printer.name)
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 8) {
+                TextField("Printer name", text: $draftName)
+                    .textFieldStyle(.roundedBorder)
+                    .onSubmit {
+                        appState.updatePrinterName(id: printer.id, name: draftName)
+                    }
+                Button("Save") {
+                    appState.updatePrinterName(id: printer.id, name: draftName)
+                }
+                Button("Remove") {
+                    appState.removePrinter(id: printer.id)
+                }
+            }
+
+            HStack(spacing: 8) {
+                Text("Paper")
+                    .font(.caption)
+                Picker("Paper", selection: Binding(
+                    get: { printer.labelSizeKey },
+                    set: { appState.updatePrinterLabelSize(id: printer.id, key: $0) }
+                )) {
+                    ForEach(appState.labelSizeKeys, id: \.self) { key in
+                        Text(appState.labelSizeTitle(for: key)).tag(key)
+                    }
+                }
+                .pickerStyle(.menu)
+                .labelsHidden()
+                Spacer()
+            }
+        }
+        .padding(8)
+        .background(Color(nsColor: .controlBackgroundColor))
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .onChange(of: printer.name) { newName in
+            if newName != draftName {
+                draftName = newName
+            }
         }
     }
 }

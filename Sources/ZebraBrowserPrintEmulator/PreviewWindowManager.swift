@@ -7,6 +7,7 @@ final class PreviewWindowManager: NSObject {
         let id: UUID
         let zpl: String
         let image: NSImage
+        let printerName: String
         var payloadExpanded: Bool
     }
 
@@ -21,13 +22,12 @@ final class PreviewWindowManager: NSObject {
         ? true
         : UserDefaults.standard.bool(forKey: payloadExpandedDefaultsKey)
 
-    func show(zpl: String, imageData: Data) {
+    func show(zpl: String, imageData: Data, printerName: String) {
         guard let image = NSImage(data: imageData) else { return }
         ensureWindow()
 
-        items.insert(
-            LabelItem(id: UUID(), zpl: zpl, image: image, payloadExpanded: defaultPayloadExpanded),
-            at: 0
+        items.append(
+            LabelItem(id: UUID(), zpl: zpl, image: image, printerName: printerName, payloadExpanded: defaultPayloadExpanded)
         )
         rebuildList()
         if let window {
@@ -183,7 +183,7 @@ final class PreviewWindowManager: NSObject {
         content.spacing = 8
         content.translatesAutoresizingMaskIntoConstraints = false
 
-        let title = NSTextField(labelWithString: "Captured Label")
+        let title = NSTextField(labelWithString: item.printerName)
         title.font = NSFont.systemFont(ofSize: 13, weight: .semibold)
 
         let close = NSButton(title: "(x)", target: self, action: #selector(removeLabel(_:)))

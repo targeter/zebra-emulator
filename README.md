@@ -16,7 +16,13 @@ The app serves both HTTP and HTTPS on `127.0.0.1`:
 
 You can change both ports from the menu bar popover.
 
-Label rendering size is selectable from the menu bar and persisted across launches. Supported sizes:
+You can configure multiple emulated printers from the menu bar:
+
+- Add/remove printers
+- Set each printer name
+- Set each printer paper size (persisted per printer)
+
+Supported sizes:
 
 - `10 x 5 cm` (default)
 - `10 x 15 cm`
@@ -63,8 +69,9 @@ curl -k https://127.0.0.1:9101/available
 ## Behavior
 
 - Requests to `/write` with a ZPL body containing `^XA` are treated as print jobs.
-- The emulator sends ZPL to Labelary for rendering.
-- The rendered image is shown in a popup window with the original ZPL payload.
+- The emulator resolves the target printer from request hints (`uid` / `printer` / `device` / `name` in query/body/headers) and falls back to the first configured printer.
+- The emulator sends ZPL to Labelary for rendering using that printer's configured paper size.
+- The rendered image is shown in a popup window with the original ZPL payload, labeled with the receiving printer name.
 
 ## Notes
 

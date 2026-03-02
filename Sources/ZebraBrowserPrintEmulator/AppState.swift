@@ -118,6 +118,10 @@ final class AppState: ObservableObject {
         restartServer(message: "Updated printer paper sizes.")
     }
 
+    func showLabelWindow() {
+        windowManager.presentWindow()
+    }
+
     private func startServer(httpPort: UInt16, httpsPort: UInt16) {
         serverStatus = "Starting"
         let serverPrinters = printers.map {

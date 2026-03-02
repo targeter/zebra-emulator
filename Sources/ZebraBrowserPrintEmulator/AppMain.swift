@@ -88,6 +88,9 @@ private struct MenuContentView: View {
                 Button("Add Printer") {
                     appState.addPrinter()
                 }
+                Button("Show Labels") {
+                    appState.showLabelWindow()
+                }
                 Spacer()
                 Button("Quit") {
                     NSApp.terminate(nil)

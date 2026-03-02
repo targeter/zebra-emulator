@@ -38,6 +38,14 @@ final class PreviewWindowManager: NSObject {
         }
     }
 
+    func presentWindow() {
+        ensureWindow()
+        if let window {
+            position(window: window, windowSize: panelSize)
+            window.orderFrontRegardless()
+        }
+    }
+
     @objc
     private func removeLabel(_ sender: NSButton) {
         guard let raw = sender.identifier?.rawValue,

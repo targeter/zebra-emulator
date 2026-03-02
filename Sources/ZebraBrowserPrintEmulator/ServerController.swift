@@ -3,8 +3,8 @@ import Network
 import Security
 
 enum ServerEvent {
-    case serverStarted(UInt16)
-    case serverFailed(Error)
+    case serverStarted(httpPort: UInt16, httpsPort: UInt16)
+    case serverFailed(String)
     case request(method: String, path: String, bodyPreview: String)
     case labelPreview(zpl: String, imageData: Data)
 }
@@ -40,46 +40,77 @@ struct BrowserPrintAvailableResponse: Codable {
 }
 
 final class ServerController {
-    private let port: UInt16
+    private let httpPort: UInt16
+    private let httpsPort: UInt16
     private let labelDimensions: String
     private let onEvent: (ServerEvent) -> Void
     private let renderer = ZPLRenderer()
     private let tlsIdentityManager = TLSIdentityManager()
-    private var listener: NWListener?
+    private var httpListener: NWListener?
+    private var httpsListener: NWListener?
+    private let stateQueue = DispatchQueue(label: "ServerController.State")
+    private var httpReady = false
+    private var httpsReady = false
+    private var didEmitStart = false
 
-    init(port: UInt16, labelDimensions: String, onEvent: @escaping (ServerEvent) -> Void) {
-        self.port = port
+    init(httpPort: UInt16, httpsPort: UInt16, labelDimensions: String, onEvent: @escaping (ServerEvent) -> Void) {
+        self.httpPort = httpPort
+        self.httpsPort = httpsPort
         self.labelDimensions = labelDimensions
         self.onEvent = onEvent
     }
 
     func start() {
         do {
-            let nwPort = NWEndpoint.Port(rawValue: port) ?? .init(integerLiteral: 9100)
-            let listener = try NWListener(using: tlsParameters(), on: nwPort)
-            self.listener = listener
+            let httpNWPort = NWEndpoint.Port(rawValue: httpPort) ?? .init(integerLiteral: 9100)
+            let httpsNWPort = NWEndpoint.Port(rawValue: httpsPort) ?? .init(integerLiteral: 9101)
 
-            listener.newConnectionHandler = { [weak self] connection in
+            let httpListener = try NWListener(using: NWParameters.tcp, on: httpNWPort)
+            let httpsListener = try NWListener(using: tlsParameters(), on: httpsNWPort)
+
+            self.httpListener = httpListener
+            self.httpsListener = httpsListener
+
+            httpListener.newConnectionHandler = { [weak self] connection in
                 guard let self else { return }
                 connection.start(queue: .global(qos: .userInitiated))
-                self.readRequest(on: connection)
+                self.readRequest(on: connection, localPort: self.httpPort)
             }
 
-            listener.stateUpdateHandler = { [weak self] state in
+            httpsListener.newConnectionHandler = { [weak self] connection in
+                guard let self else { return }
+                connection.start(queue: .global(qos: .userInitiated))
+                self.readRequest(on: connection, localPort: self.httpsPort)
+            }
+
+            httpListener.stateUpdateHandler = { [weak self] state in
                 guard let self else { return }
                 switch state {
                 case .ready:
-                    self.onEvent(.serverStarted(self.port))
+                    self.markReady(isHTTPS: false)
                 case .failed(let error):
-                    self.onEvent(.serverFailed(error))
+                    self.onEvent(.serverFailed("HTTP \(self.httpPort): \(error.localizedDescription)"))
                 default:
                     break
                 }
             }
 
-            listener.start(queue: .global(qos: .userInitiated))
+            httpsListener.stateUpdateHandler = { [weak self] state in
+                guard let self else { return }
+                switch state {
+                case .ready:
+                    self.markReady(isHTTPS: true)
+                case .failed(let error):
+                    self.onEvent(.serverFailed("HTTPS \(self.httpsPort): \(error.localizedDescription)"))
+                default:
+                    break
+                }
+            }
+
+            httpListener.start(queue: .global(qos: .userInitiated))
+            httpsListener.start(queue: .global(qos: .userInitiated))
         } catch {
-            onEvent(.serverFailed(error))
+            onEvent(.serverFailed(error.localizedDescription))
         }
     }
 
@@ -95,11 +126,32 @@ final class ServerController {
     }
 
     func stop() {
-        listener?.cancel()
-        listener = nil
+        httpListener?.cancel()
+        httpsListener?.cancel()
+        httpListener = nil
+        httpsListener = nil
+        stateQueue.sync {
+            httpReady = false
+            httpsReady = false
+            didEmitStart = false
+        }
     }
 
-    private func readRequest(on connection: NWConnection) {
+    private func markReady(isHTTPS: Bool) {
+        stateQueue.sync {
+            if isHTTPS {
+                httpsReady = true
+            } else {
+                httpReady = true
+            }
+
+            guard httpReady, httpsReady, !didEmitStart else { return }
+            didEmitStart = true
+            onEvent(.serverStarted(httpPort: httpPort, httpsPort: httpsPort))
+        }
+    }
+
+    private func readRequest(on connection: NWConnection, localPort: UInt16) {
         receiveUntilComplete(on: connection, buffer: Data()) { [weak self] data in
             guard let self, let data else {
                 connection.cancel()
@@ -107,7 +159,7 @@ final class ServerController {
             }
 
             let request = HTTPRequest.parse(data: data)
-            let response = self.route(request: request)
+            let response = self.route(request: request, localPort: localPort)
             connection.send(content: response.serializedData, completion: .contentProcessed({ _ in
                 connection.cancel()
             }))
@@ -134,7 +186,7 @@ final class ServerController {
         }
     }
 
-    private func route(request: HTTPRequest?) -> HTTPResponse {
+    private func route(request: HTTPRequest?, localPort: UInt16) -> HTTPResponse {
         guard let request else {
             return HTTPResponse(statusCode: 400, body: "Invalid request")
         }
@@ -147,7 +199,7 @@ final class ServerController {
         }
 
         let normalizedPath = request.pathWithoutQuery
-        let device = BrowserPrintDevice.zebra(port: port)
+        let device = BrowserPrintDevice.zebra(port: localPort)
         switch (request.method, normalizedPath) {
         case ("GET", "/available"):
             return jsonResponse(BrowserPrintAvailableResponse.single(device))

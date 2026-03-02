@@ -34,7 +34,10 @@ private struct MenuContentView: View {
                 .font(.headline)
             Text("Status: \(appState.serverStatus)")
                 .font(.subheadline)
-            Text("Listening on https://127.0.0.1:\(appState.port)")
+            Text("HTTP:  http://127.0.0.1:\(appState.httpPort)")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+            Text("HTTPS: https://127.0.0.1:\(appState.httpsPort)")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
             HStack(spacing: 8) {
@@ -49,13 +52,18 @@ private struct MenuContentView: View {
                 .labelsHidden()
             }
             HStack(spacing: 8) {
-                Text("Port")
+                Text("HTTP")
                     .font(.caption)
-                TextField("9100", text: $appState.portInput)
+                TextField("9100", text: $appState.httpPortInput)
                     .textFieldStyle(.roundedBorder)
-                    .frame(width: 90)
+                    .frame(width: 80)
+                Text("HTTPS")
+                    .font(.caption)
+                TextField("9101", text: $appState.httpsPortInput)
+                    .textFieldStyle(.roundedBorder)
+                    .frame(width: 80)
                 Button("Apply") {
-                    appState.applyPortChange()
+                    appState.applyPortChanges()
                 }
                 .keyboardShortcut(.return, modifiers: [])
             }
@@ -83,7 +91,7 @@ private struct MenuContentView: View {
             }
         }
         .padding(12)
-        .frame(width: 330)
+        .frame(width: 380)
         .onChange(of: appState.selectedLabelSizeKey) { newSize in
             appState.applyLabelSizeChange(newSize)
         }

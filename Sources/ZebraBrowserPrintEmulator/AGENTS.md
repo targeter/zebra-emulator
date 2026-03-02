@@ -22,7 +22,7 @@ Runtime module for app lifecycle, local HTTPS Browser Print emulation, ZPL rende
 ## CONVENTIONS
 
 - Keep route compatibility stable for `/available`, `/default`, `/write`, `/read`.
-- Preserve persisted keys: `emulator.port`, `emulator.label-size`, `preview.payload.expanded`.
+- Preserve persisted keys: `emulator.port`, `emulator.https-port`, `emulator.label-size`, `preview.payload.expanded`.
 - Label size mapping is canonical in `AppState`: `10x5`, `10x15`, `10x21`.
 - TLS identity is local/self-signed; cert material stored in Application Support.
 
@@ -37,5 +37,6 @@ Runtime module for app lifecycle, local HTTPS Browser Print emulation, ZPL rende
 ```bash
 swift build
 swift run ZebraBrowserPrintEmulator
-curl -k https://127.0.0.1:9100/available
+curl http://127.0.0.1:9100/available
+curl -k https://127.0.0.1:9101/available
 ```

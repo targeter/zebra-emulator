@@ -37,7 +37,7 @@ zebra-emulator/
 
 - Browser Print compatibility takes precedence over internal API preferences.
 - Local endpoint is HTTPS on `127.0.0.1:<port>` with self-signed cert.
-- Persisted settings keys are stable: `emulator.port`, `emulator.label-size`, `preview.payload.expanded`.
+- Persisted settings keys are stable: `emulator.port`, `emulator.https-port`, `emulator.label-size`, `preview.payload.expanded`.
 - Label sizes exposed in UI map to Labelary dimensions: `10x5`, `10x15`, `10x21`.
 
 ## ANTI-PATTERNS (THIS PROJECT)

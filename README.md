@@ -9,7 +9,12 @@ This project emulates Zebra Browser Print on macOS and captures label print requ
 - `POST /write`
 - `GET /read` and `POST /read`
 
-The app serves HTTPS on `127.0.0.1` using a self-signed localhost certificate. It defaults to port `9100`, and you can change the port from the menu bar popover (Port field + Apply).
+The app serves both HTTP and HTTPS on `127.0.0.1`:
+
+- HTTP defaults to `9100`
+- HTTPS defaults to `9101` (self-signed localhost certificate)
+
+You can change both ports from the menu bar popover.
 
 Label rendering size is selectable from the menu bar and persisted across launches. Supported sizes:
 
@@ -23,7 +28,6 @@ Label rendering size is selectable from the menu bar and persisted across launch
 swift run ZebraBrowserPrintEmulator
 ```
 
-After launch, you will see a printer icon in the macOS menu bar. Use your Browser Print client code against `https://127.0.0.1:9100`.
 ## Open in Xcode (native app target)
 
 Generate the Xcode project:
@@ -44,10 +48,16 @@ Inside Xcode you can configure Signing & Capabilities and other app target prope
 
 The icon is generated to `XcodeApp/Resources/AppIcon.icns`.
 
+After launch, you will see a printer icon in the macOS menu bar. You can use Browser Print client code against either:
+
+- `http://127.0.0.1:9100`
+- `https://127.0.0.1:9101`
+
 For local CLI checks, use `-k` because the certificate is self-signed:
 
 ```bash
-curl -k https://127.0.0.1:9100/available
+curl http://127.0.0.1:9100/available
+curl -k https://127.0.0.1:9101/available
 ```
 
 ## Behavior

@@ -7,63 +7,79 @@ final class AppState: ObservableObject {
 
     @Published var serverStatus = "Starting"
     @Published var lastRequestSummary: String?
-    @Published var portInput: String
+    @Published var httpPortInput: String
+    @Published var httpsPortInput: String
     @Published var portMessage: String?
     @Published var selectedLabelSizeKey: String
 
-    private(set) var port: UInt16
+    private(set) var httpPort: UInt16
+    private(set) var httpsPort: UInt16
 
     private var controller: ServerController?
     private let windowManager = PreviewWindowManager()
     private var started = false
-    private static let defaultPort: UInt16 = 9100
-    private static let portDefaultsKey = "emulator.port"
+    private static let defaultHTTPPort: UInt16 = 9100
+    private static let defaultHTTPSPort: UInt16 = 9101
+    private static let httpPortDefaultsKey = "emulator.port"
+    private static let httpsPortDefaultsKey = "emulator.https-port"
     private static let labelSizeDefaultsKey = "emulator.label-size"
 
     let labelSizeKeys = ["10x5", "10x15", "10x21"]
 
     private init() {
-        let stored = UserDefaults.standard.integer(forKey: Self.portDefaultsKey)
-        let initialPort: UInt16
-        if stored >= 1 && stored <= Int(UInt16.max) {
-            initialPort = UInt16(stored)
-        } else {
-            initialPort = Self.defaultPort
-        }
+        let initialHTTPPort = Self.loadPort(forKey: Self.httpPortDefaultsKey, fallback: Self.defaultHTTPPort)
+        let initialHTTPSPort = Self.loadPort(forKey: Self.httpsPortDefaultsKey, fallback: Self.defaultHTTPSPort)
 
         let storedSize = UserDefaults.standard.string(forKey: Self.labelSizeDefaultsKey)
         let initialLabelSize = Self.labelDimensionsByKey.keys.contains(storedSize ?? "") ? (storedSize ?? "10x5") : "10x5"
 
-        port = initialPort
-        portInput = String(initialPort)
+        httpPort = initialHTTPPort
+        httpsPort = initialHTTPSPort
+        httpPortInput = String(initialHTTPPort)
+        httpsPortInput = String(initialHTTPSPort)
         selectedLabelSizeKey = initialLabelSize
     }
 
     func startIfNeeded() {
         guard !started else { return }
         started = true
-        startServer(on: port)
+        startServer(httpPort: httpPort, httpsPort: httpsPort)
     }
 
-    func applyPortChange() {
-        let trimmed = portInput.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard let parsed = Int(trimmed), parsed >= 1, parsed <= Int(UInt16.max) else {
-            portMessage = "Port must be between 1 and 65535."
-            portInput = String(port)
+    func applyPortChanges() {
+        let trimmedHTTP = httpPortInput.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let parsedHTTP = Int(trimmedHTTP), parsedHTTP >= 1, parsedHTTP <= Int(UInt16.max) else {
+            portMessage = "HTTP port must be between 1 and 65535."
+            httpPortInput = String(httpPort)
             return
         }
 
-        let newPort = UInt16(parsed)
-        guard newPort != port else {
-            portMessage = "Already using port \(port)."
+        let trimmedHTTPS = httpsPortInput.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let parsedHTTPS = Int(trimmedHTTPS), parsedHTTPS >= 1, parsedHTTPS <= Int(UInt16.max) else {
+            portMessage = "HTTPS port must be between 1 and 65535."
+            httpsPortInput = String(httpsPort)
             return
         }
 
-        port = newPort
-        UserDefaults.standard.set(Int(newPort), forKey: Self.portDefaultsKey)
-        portMessage = "Restarting server on port \(newPort)..."
+        let newHTTPPort = UInt16(parsedHTTP)
+        let newHTTPSPort = UInt16(parsedHTTPS)
+        guard newHTTPPort != newHTTPSPort else {
+            portMessage = "HTTP and HTTPS ports must be different."
+            return
+        }
+
+        guard newHTTPPort != httpPort || newHTTPSPort != httpsPort else {
+            portMessage = "Already using HTTP \(httpPort) and HTTPS \(httpsPort)."
+            return
+        }
+
+        httpPort = newHTTPPort
+        httpsPort = newHTTPSPort
+        UserDefaults.standard.set(Int(newHTTPPort), forKey: Self.httpPortDefaultsKey)
+        UserDefaults.standard.set(Int(newHTTPSPort), forKey: Self.httpsPortDefaultsKey)
+        portMessage = "Restarting listeners (HTTP \(newHTTPPort), HTTPS \(newHTTPSPort))..."
         controller?.stop()
-        startServer(on: newPort)
+        startServer(httpPort: newHTTPPort, httpsPort: newHTTPSPort)
     }
 
     func applyLabelSizeChange(_ key: String) {
@@ -73,13 +89,13 @@ final class AppState: ObservableObject {
         portMessage = "Using label size \(labelSizeTitle(for: key))."
         guard started else { return }
         controller?.stop()
-        startServer(on: port)
+        startServer(httpPort: httpPort, httpsPort: httpsPort)
     }
 
-    private func startServer(on port: UInt16) {
+    private func startServer(httpPort: UInt16, httpsPort: UInt16) {
         serverStatus = "Starting"
         let dimensions = Self.labelDimensionsByKey[selectedLabelSizeKey] ?? Self.labelDimensionsByKey["10x5"]!
-        let controller = ServerController(port: port, labelDimensions: dimensions) { [weak self] event in
+        let controller = ServerController(httpPort: httpPort, httpsPort: httpsPort, labelDimensions: dimensions) { [weak self] event in
             Task { @MainActor in
                 self?.handle(event: event)
             }
@@ -103,17 +119,26 @@ final class AppState: ObservableObject {
         "10x21": "3.94x8.27"
     ]
 
+    private static func loadPort(forKey key: String, fallback: UInt16) -> UInt16 {
+        let stored = UserDefaults.standard.integer(forKey: key)
+        if stored >= 1 && stored <= Int(UInt16.max) {
+            return UInt16(stored)
+        }
+        return fallback
+    }
+
     private func handle(event: ServerEvent) {
         switch event {
-        case .serverStarted(let port):
+        case .serverStarted(let httpPort, let httpsPort):
             serverStatus = "Running"
-            portInput = String(port)
-            portMessage = "Listening on port \(port)."
-            lastRequestSummary = "Server started on port \(port)."
-        case .serverFailed(let error):
+            httpPortInput = String(httpPort)
+            httpsPortInput = String(httpsPort)
+            portMessage = "Listening on HTTP \(httpPort) and HTTPS \(httpsPort)."
+            lastRequestSummary = "Server started on HTTP \(httpPort) and HTTPS \(httpsPort)."
+        case .serverFailed(let details):
             serverStatus = "Failed"
-            portMessage = "Failed to bind port \(port): \(error.localizedDescription)"
-            lastRequestSummary = "Server failed: \(error.localizedDescription)"
+            portMessage = "Failed to start listeners: \(details)"
+            lastRequestSummary = "Server failed: \(details)"
         case .request(let method, let path, let bodyPreview):
             lastRequestSummary = "\(method) \(path)\n\(bodyPreview)"
         case .labelPreview(let zpl, let imageData):

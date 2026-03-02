@@ -12,7 +12,8 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "ZebraBrowserPrintEmulator",
-            path: "Sources/ZebraBrowserPrintEmulator"
+            path: "Sources/ZebraBrowserPrintEmulator",
+            exclude: ["AGENTS.md"]
         )
     ]
 )

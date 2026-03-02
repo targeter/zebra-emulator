@@ -194,9 +194,20 @@ final class PreviewWindowManager: NSObject {
         let title = NSTextField(labelWithString: item.printerName)
         title.font = NSFont.systemFont(ofSize: 13, weight: .semibold)
 
-        let close = NSButton(title: "(x)", target: self, action: #selector(removeLabel(_:)))
-        close.bezelStyle = .smallSquare
+        let closeImage = NSImage(systemSymbolName: "xmark", accessibilityDescription: "Remove label")?.withSymbolConfiguration(.init(pointSize: 9, weight: .semibold)) ?? NSImage()
+        let close = NSButton(image: closeImage, target: self, action: #selector(removeLabel(_:)))
+        close.bezelStyle = .circular
+        close.isBordered = true
+        close.imagePosition = .imageOnly
+        close.contentTintColor = NSColor.secondaryLabelColor
+        close.controlSize = .regular
+        close.setButtonType(.momentaryPushIn)
+        close.translatesAutoresizingMaskIntoConstraints = false
         close.identifier = NSUserInterfaceItemIdentifier(item.id.uuidString)
+        NSLayoutConstraint.activate([
+            close.widthAnchor.constraint(equalToConstant: 20),
+            close.heightAnchor.constraint(equalToConstant: 20)
+        ])
 
         let header = NSStackView(views: [title, close])
         header.orientation = .horizontal
